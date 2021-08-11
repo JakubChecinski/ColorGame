@@ -1,0 +1,122 @@
+﻿@using ColorGame.Data;
+
+@if (visible)
+{
+    <div class="@RiddleShape"
+     style="margin: auto;
+     color: @RiddleFontColor;
+     background-color: @RiddleBackgroundForSquareCircle;
+     border-color: transparent transparent @RiddleBackgroundForTriangle transparent; ">
+        <p class="colorRiddleText"><b>@RiddleText</b></p>
+    </div>
+}
+else
+{
+    <p>@InfoText</p>
+}
+
+
+@code {
+
+    private Random rng = new Random();
+    private bool visible = false;
+
+    public string RiddleShape { get; set; }
+    public string RiddleFontColor { get; set; }
+    public string RiddleText { get; set; }
+    public string InfoText { get; set; }
+
+    private string riddleBackground;
+    public string RiddleBackgroundForSquareCircle
+    {
+        get => RiddleShape == "triangle" ? "transparent" : riddleBackground;
+    }
+    public string RiddleBackgroundForTriangle
+    {
+        get => RiddleShape == "triangle" ? riddleBackground : "transparent";
+    }
+
+    public string RiddleAnswer
+    {
+        get
+        {
+            switch (RiddleShape)
+            {
+                case "triangle":
+                    return RiddleText;
+                case "square":
+                    return GameColor.GetName(riddleBackground);
+                default:
+                    return GameColor.GetName(RiddleFontColor);
+            }
+        }
+    }
+
+    // call this method to switch to the next riddle shape
+    public void SetNextRiddle()
+    {
+        SetRiddleClass();
+        var fColor = SetForegroundColor();
+        var bColor = SetBackgroundColor(fColor);
+        SetText(fColor, bColor);
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void ShowRiddle()
+    {
+        visible = true;
+        InvokeAsync(StateHasChanged);
+    }
+    public void HideRiddle()
+    {
+        visible = false;
+        InvokeAsync(StateHasChanged);
+    }
+
+    // helper methods
+    private void SetRiddleClass()
+    {
+        var shapeCode = rng.Next(3);
+        switch (shapeCode)
+        {
+            case 0:
+                RiddleShape = "square";
+                break;
+            case 1:
+                RiddleShape = "circle";
+                break;
+            case 2:
+                RiddleShape = "triangle";
+                break;
+        }
+    }
+
+    private int SetForegroundColor()
+    {
+        var foregroundColorCode = rng.Next(4);
+        RiddleFontColor = GameColor.GetHtml(foregroundColorCode);
+        return foregroundColorCode;
+    }
+
+    private int SetBackgroundColor(int foregroundColorCode)
+    {
+        int backgroundColorCode;
+        do
+        {
+            backgroundColorCode = rng.Next(4);
+        } while (backgroundColorCode == foregroundColorCode);
+        riddleBackground = GameColor.GetHtml(backgroundColorCode);
+        return backgroundColorCode;
+    }
+
+    private void SetText(int foregroundColorCode, int backgroundColorCode)
+    {
+        int textColorCode;
+        do
+        {
+            textColorCode = rng.Next(4);
+        } while (textColorCode == foregroundColorCode || textColorCode == backgroundColorCode);
+        RiddleText = GameColor.GetName(textColorCode);
+    }
+
+}

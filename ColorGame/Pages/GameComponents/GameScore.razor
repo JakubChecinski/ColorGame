@@ -1,0 +1,30 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<p>Previous time: @score.ToString("0.0") seconds</p>
+<p>Best time this session: @bestScoreSession.ToString("0.0") seconds</p>
+@*<AuthorizeView>
+    <Authorized>
+        <p>Best time all sessions: @bestScoreSession.ToString("0.0") seconds</p>
+    </Authorized>
+</AuthorizeView>*@
+
+@code {
+
+    private bool userLoggedIn = false;
+
+    private decimal bestScoreSession;
+    private decimal score;
+    public decimal Score
+    {
+        get { return score; }
+        set
+        {
+            score = value;
+            if (score < bestScoreSession || bestScoreSession <= 0.0m) bestScoreSession = score;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+}

@@ -1,0 +1,36 @@
+﻿<p><b>Time: @seconds.@decimals seconds</b></p>
+
+@code {
+
+    private System.Timers.Timer timer;
+    private System.Diagnostics.Stopwatch stopwatch;
+    private int seconds, decimals;
+
+    public void StartTimer()
+    {
+        timer = new System.Timers.Timer(100);
+        timer.Elapsed += CountDownTimer;
+        stopwatch = new System.Diagnostics.Stopwatch();
+        stopwatch.Start();
+        timer.Start();
+    }
+
+    public void StopTimer()
+    {
+        timer.Stop();
+        stopwatch.Stop();
+    }
+
+    public decimal GetScore()
+    {
+        return (decimal)decimals / 10.0m + seconds;
+    }
+
+    private void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        seconds = (int)(stopwatch.ElapsedMilliseconds - stopwatch.ElapsedMilliseconds % 1000) / 1000;
+        decimals = (int)(stopwatch.ElapsedMilliseconds % 1000) / 100;
+        InvokeAsync(StateHasChanged);
+    }
+
+}

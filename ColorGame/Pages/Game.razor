@@ -1,0 +1,83 @@
+﻿@using ColorGame.Pages.GameComponents;
+
+<div class="gameDiv">
+    <div>
+        <h3>Instructions</h3>
+        <p>
+            If the displayed shape is a <strong>circle</strong> <big><big>●</big></big>,
+            click the button corresponding to the displayed <strong>font color.</strong>
+            <br />
+            If the displayed shape is a <strong>square</strong> <big>■</big>,
+            click the button corresponding to the shape <strong>background.</strong>
+            <br />
+            If the displayed shape is a <strong>triangle</strong> ▲,
+            click the button corresponding to the <strong>displayed text.</strong><big></big>
+        </p>
+    </div>
+    <br />
+    <div>
+        <GameTimer @ref="gameTimer"></GameTimer>
+        <button @onclick='() => Guess("yellow")'>Yellow</button>
+        <button @onclick='() => Guess("red")'>Red</button>
+        <button @onclick='() => Guess("green")'>Green</button>
+        <button @onclick='() => Guess("blue")'>Blue</button>
+        <br />
+        <br />
+        <DisplayedShape @ref="displayedShape"></DisplayedShape>
+        @if (!gameHasStarted)
+        {
+            <button @onclick="StartGame">Start game</button>
+        }
+    </div>
+    <br />
+    <div>
+        <GameScore @ref="gameScore"></GameScore>
+    </div>
+</div>
+
+
+@code {
+
+    private DisplayedShape displayedShape;
+    private GameTimer gameTimer;
+    private GameScore gameScore;
+    private bool gameHasStarted = false;
+
+    private const int maxAnswers = 5;
+    private int correctAnswers = 0;
+
+    private void Guess(string colorName)
+    {
+        if (!gameHasStarted) return;
+        if (displayedShape.RiddleAnswer == colorName)
+        {
+            correctAnswers++;
+            if (correctAnswers >= maxAnswers) EndGame(true);
+            else displayedShape.SetNextRiddle();
+        }
+        else EndGame(false);
+    }
+
+    private void StartGame()
+    {
+        displayedShape.SetNextRiddle();
+        gameHasStarted = true;
+        displayedShape.ShowRiddle();
+        gameTimer.StartTimer();
+    }
+
+    private void EndGame(bool success)
+    {
+        gameTimer.StopTimer();
+        gameHasStarted = false;
+        correctAnswers = 0;
+        if (success)
+        {
+            displayedShape.InfoText = "";
+            gameScore.Score = gameTimer.GetScore();
+        }
+        else displayedShape.InfoText = "Sorry, but the correct answer was: " + displayedShape.RiddleAnswer;
+        displayedShape.HideRiddle();
+    }
+
+}
