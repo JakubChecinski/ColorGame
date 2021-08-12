@@ -1,5 +1,6 @@
 using ColorGame.Areas.Identity;
 using ColorGame.Data;
+using ColorGame.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -38,7 +39,10 @@ namespace ColorGame
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<BestScoreService, BestScoreService>();
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<AuthenticationStateProvider, 
+                RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

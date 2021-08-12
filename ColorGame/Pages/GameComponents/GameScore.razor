@@ -1,19 +1,17 @@
-﻿@using System.Security.Claims
-@using Microsoft.AspNetCore.Components.Authorization
-@inject AuthenticationStateProvider AuthenticationStateProvider
+﻿@using ColorGame.Services;
+@inject BestScoreService Service;
 
 <p>Previous time: @score.ToString("0.0") seconds</p>
 <p>Best time this session: @bestScoreSession.ToString("0.0") seconds</p>
-@*<AuthorizeView>
+<AuthorizeView>
     <Authorized>
-        <p>Best time all sessions: @bestScoreSession.ToString("0.0") seconds</p>
+        <p>Best time all sessions: @bestScoreAllTime.ToString("0.0") seconds</p>
     </Authorized>
-</AuthorizeView>*@
+</AuthorizeView>
 
 @code {
 
-    private bool userLoggedIn = false;
-
+    private decimal bestScoreAllTime;
     private decimal bestScoreSession;
     private decimal score;
     public decimal Score
@@ -23,6 +21,22 @@
         {
             score = value;
             if (score < bestScoreSession || bestScoreSession <= 0.0m) bestScoreSession = score;
+            if (score < bestScoreAllTime || bestScoreAllTime <= 0.0m)
+            {
+                Service.Update(new Data.BestScore() { Value = score });
+                bestScoreAllTime = score;
+            }
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+        if(firstRender)
+        {
+            var currentBestScore = Service.Get();
+            bestScoreAllTime = currentBestScore != null ? currentBestScore.Value : 0.0m;
             InvokeAsync(StateHasChanged);
         }
     }

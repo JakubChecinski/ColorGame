@@ -8,6 +8,6 @@ namespace ColorGame.Data
 {
     public class ApplicationUser : IdentityUser
     {
-        public int BestScore { get; set; }
+        public BestScore BestScore { get; set; }
     }
 }

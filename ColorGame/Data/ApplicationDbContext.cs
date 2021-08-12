@@ -6,14 +6,14 @@ using System.Text;
 
 namespace ColorGame.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<BestScore> BestScores { get; set; }
 
     }
 }
