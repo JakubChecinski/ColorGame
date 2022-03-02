@@ -9,6 +9,6 @@ If the displayed shape is a <strong>square</strong>, click the button correspond
 <br />
 If the displayed shape is a <strong>triangle</strong>, click the button corresponding to the <strong>displayed text.</strong><big></big>
 <br />
-In order to win the game and see your score, you need to guess correctly five times<br />
+In order to win the game and see your score, you need to guess correctly five times.<br />
 <br />
 Note: this is a tiny project, but it displays some features of the Blazor Server. The application will keep track of your best score and, for logged in users, it will also save this score in the database for future retrieval. 
