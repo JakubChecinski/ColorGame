@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace ColorGame.Services
 {
-    public static class GameColor
+    /// <summary>
+    /// a utility service for conversions between in-game shape codes and color strings or HTML values 
+    /// </summary>
+    public static class ShapeDataService
     {
         public static string GetHtml(int code)
         {

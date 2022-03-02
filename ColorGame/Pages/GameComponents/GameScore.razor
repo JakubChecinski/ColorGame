@@ -11,6 +11,14 @@
 
 @code {
 
+    /*
+      this component keeps track of and displays the game scores
+      there are three types of scores in the game:
+        1) current/previous game score [score] - changes after every game
+        2) best score of this session [bestScoreSession] - will reset when the component is refreshed
+        3) best score of all time [bestScoreAllTime] - will be saved to DB in the case of logged in users
+    */
+
     private decimal bestScoreAllTime;
     private decimal bestScoreSession;
     private decimal score;
