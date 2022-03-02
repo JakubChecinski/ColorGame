@@ -3,11 +3,11 @@ A small browser game made with Blazor Server
 
 Color Game: press buttons to guess the correct color.</br>
 </br>
-If the displayed shape is a <strong>circle</strong> <big><big>●</big></big>, click the button corresponding to the displayed <strong>font color.</strong>
+If the displayed shape is a <strong>circle</strong>, click the button corresponding to the displayed <strong>font color.</strong>
 <br />
-If the displayed shape is a <strong>square</strong> <big>■</big>, click the button corresponding to the shape <strong>background.</strong>
+If the displayed shape is a <strong>square</strong>, click the button corresponding to the shape <strong>background.</strong>
 <br />
-If the displayed shape is a <strong>triangle</strong> ▲, click the button corresponding to the <strong>displayed text.</strong><big></big>
+If the displayed shape is a <strong>triangle</strong>, click the button corresponding to the <strong>displayed text.</strong><big></big>
 <br />
 In order to win the game and see your score<span style="font-size: larger">,</span> you need to guess correctly five times.<br />
 <br />
